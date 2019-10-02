@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    
+    div{
+        height: 100px;
+        width : 100px;
+        background-color:orange;
+        position: absolute;
+        left: 0px;
+        top : 0px;
+    }
+
+    button{
+        margin-top: 100px;
+    }
+
+    
+    </style>
+    <title>简单匀速运动</title>
+</head>
+<body>
+    <div></div>
+    <button id="btn">点击我</button>
+
+    <script>
+        var oDiv = document.getElementsByTagName('div')[0];
+        var oBtn = document.getElementById('btn');
+        var timer = null;
+        oBtn.onclick = function (){
+            var iSpeed = 4;
+            clearInterval(timer);
+            timer =  setInterval(function(){
+                oDiv.style.left = oDiv.offsetLeft +iSpeed+'px';
+            },30)
+        }
+    
+    </script>
+</body>
+</html>
