@@ -34,24 +34,41 @@
     }
     
     </style>
-    <title>简单匀速运动</title>
+    <title>到点停止匀速运动</title>
 </head>
 <body>
     <div></div>
     <button id="btn">点击我</button>
-    <!-- <span></span> -->
+    <span></span>
     <script>
         var oDiv = document.getElementsByTagName('div')[0];
         var oBtn = document.getElementById('btn');
         var timer = null;
         oBtn.onclick = function (){
-            var iSpeed = 4;
-            clearInterval(timer);
-            timer =  setInterval(function(){
-                oDiv.style.left = oDiv.offsetLeft +iSpeed+'px';
-            },30)
+            startMove(this)
         }
     
+
+        //封装匀速运动方法
+        function startMove(dom){
+            var iSpeed = 7;
+            clearInterval(timer);
+            timer =  setInterval(function(){
+                //这里是想让dom 在 300px的位置停下来,但是直接写 == 很大几率判断不到,而直接掠过
+                //写 oDiv.offsetLeft   >= 300 又会有超过以后回退回来的画面不美观
+                // 这里的策略 是 判断当 目标与dom的距离小于等于一次移动的距离时就直接设置位置,清除定时
+                if(300 - dom.offsetLeft  < iSpeed ){
+                    clearInterval(timer);
+                    dom.style.left  = 300+ 'px';
+                }else{
+                    dom.style.left = oDiv.offsetLeft +iSpeed+'px';
+                }
+
+            },30)
+        }
+
+
+
     </script>
 </body>
 </html>

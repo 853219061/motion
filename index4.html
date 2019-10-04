@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    
+    div{
+        height: 100px;
+        width : 100px;
+        background-color:orange;
+        position: absolute;
+        left: 1000px;
+        top : 0px;
+    }
+
+    button{
+        margin-top: 100px;
+    }
+
+
+    span{
+        position : absolute;
+        width : 1px;
+        height: 100px;
+        left : 300px;
+        /* top : 300px; */
+        background-color: black;
+    }
+    
+    </style>
+    <title>缓冲运动</title>
+</head>
+<body>
+    <div></div>
+    <button id="btn">点击我</button>
+    <span></span>
+    <script>
+        //缓冲运动: 距离目标点越近速度就越小 ,到达目标点时停下来
+
+        var oDiv = document.getElementsByTagName('div')[0];
+        var oBtn = document.getElementById('btn');
+        oBtn.onclick = function (){
+            startBufferMove(oDiv,300);
+        }
+    
+        //通用匀速运动
+        var timer = null;
+        function startMove(dom,target){
+            var iSpeed = -7;
+            clearInterval(timer);
+            timer =  setInterval(function(){
+                //这里是想让dom 在 300px的位置停下来,但是直接写 == 很大几率判断不到,而直接掠过
+                //写 oDiv.offsetLeft   >= 300 又会有超过以后回退回来的画面不美观
+                // 这里的策略 是 判断当 目标与dom的距离小于等于一次移动的距离时就直接设置位置,清除定时
+                if(Math.abs(target - dom.offsetLeft)  < Math.abs(iSpeed)  ){
+                    clearInterval(timer);
+                    dom.style.left  = target+ 'px';
+                }else{
+                    dom.style.left = dom.offsetLeft +iSpeed+'px';
+                }
+
+            },30)
+        }
+
+        //缓冲运动  如果是反向的缓冲运动呢?
+        function startBufferMove(dom,target){
+           var iSpeed = 0;
+            clearInterval(timer);
+            timer = setInterval(function(){
+                iSpeed = (target - oDiv.offsetLeft) /7;
+            
+
+                    //这里正数向上取整是因为  0< 速度 <1 时  ,小数的像素设置是不会移动dom的
+                    //负数向下取整是因为   0> 速度 > -1 时 向上取整就是 0 是不会移动的
+                 iSpeed =  iSpeed> 0 ?Math.ceil(iSpeed): Math.floor(iSpeed);
+                // iSpeed =  Math.ceil(iSpeed);
+                console.log(iSpeed);
+             
+                //到达目标点时停下来
+                if(oDiv.offsetLeft == target){
+                    clearInterval(timer);
+                }else{
+                    oDiv.style.left = oDiv.offsetLeft +iSpeed + 'px';
+                }
+               
+            },30)
+        }
+
+
+    </script>
+</body>
+</html>
