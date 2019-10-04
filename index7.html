@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            opacity: 1;
+            position: absolute;
+
+        }
+    </style>
+    <title>物体多属性运动</title>
+</head>
+
+<body>
+    <div id="topDiv"></div>
+  
+
+
+
+
+
+    <script>
+        var oTdiv = document.getElementById('topDiv');
+
+        oTdiv.onclick = function () {
+            startBufferMove(this, { width:400,height:400,left :200,top:300,opacity: 50 }, function () { alert('成功!') })
+        }
+       
+        function getStyle(dom, attr) {
+            return window.getComputedStyle(dom, null)[attr]
+        }
+
+        function startBufferMove(dom, attrObj, callback) {
+          var iStop = true;
+            clearInterval(dom.timer);
+            dom.timer =  setInterval(() => {
+                var iSpeed = null;
+                var iCur = null;
+                var iStop = null;
+
+                for( var i in attrObj){
+
+                    if(i == "opacity"){
+                        iCur = parseFloat(getStyle(dom,'opacity')) *100;
+                    }else{
+                        iCur = parseInt(getStyle(dom,i));
+                    }
+
+                    iSpeed =  (attrObj[i]  -   iCur) / 7; 
+                    iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
+
+                    if( i == 'opacity'){
+                        dom.style.opacity = (iCur + iSpeed) /100;
+                    }else{
+                        dom.style[i] = iCur + iSpeed + 'px'; 
+                    }
+
+                    if(iCur  != attrObj[i]){
+                        iStop = false;
+                    }
+
+
+                }
+
+
+
+            }, 30);
+        }
+
+    </script>
+</body>
+
+</html>

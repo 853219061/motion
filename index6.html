@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    
+    div{
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        opacity: 1;
+        margin-top: 100px;
+
+    }
+
+
+
+
+
+   
+    
+    </style>
+    <title>多物体运动</title>
+</head>
+<body>
+   <div></div>
+   <div></div>
+   <div></div>
+   <div></div>
+
+
+
+    <script>
+        var oDivArray = document.getElementsByTagName('div');
+        for(var i = 0 ; i <oDivArray.length ;i++){
+            oDivArray[i].onmouseenter  = function(){
+                startBufferMove(this,400);
+            }
+
+            oDivArray[i].onmouseleave = function(){
+                startBufferMove(this,100);
+            }
+        }
+
+
+        function getStyle(dom,attr){
+            if (window.getComputedStyle){
+                return getComputedStyle(dom,null)[attr];
+            }else{
+                return dom.currentStyle[attr];
+            }
+        }
+
+
+        //通用匀速运动
+        var timer = null;
+        //缓冲运动  如果是反向的缓冲运动呢?
+        function startBufferMove(dom,target){
+           var iSpeed = 0;
+           var iCur = null;
+            clearInterval(dom.timer);
+            dom.timer = setInterval(function(){
+              
+                iCur =parseInt(getStyle(dom,'width')) ;
+                iSpeed = (target - iCur) /7;
+                iSpeed =  iSpeed> 0 ?Math.ceil(iSpeed): Math.floor(iSpeed);
+                //到达目标点时停下来
+                if(iCur == target){
+                    clearInterval(dom.timer);
+                }else{
+                    dom.style.width = iCur +iSpeed + 'px';
+                }
+               
+            },30)
+        }
+
+
+      
+
+    </script>
+</body>
+</html>
